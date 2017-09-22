@@ -8,10 +8,8 @@
 //	Where : object name = the name of the object to be analyzed, query limit = max number of records to be analyzed (if 0, no limit)
 //	Example : fieldAnalysisBatch instance = new fieldAnalysisBatch('account', 0);
 //	
-//	
 //	Version 18st August, 2017
 //	change output format to a more convenient CSV file
-//	Version 23st August, 2017 :
 //
 global class fieldAnalysisBatch implements Database.Batchable<SObject>, Database.stateful  {
 
@@ -79,7 +77,35 @@ global class fieldAnalysisBatch implements Database.Batchable<SObject>, Database
         theResult = initializeRecordTypeMap();
         countersByAge = initializeAgeCounters(10);
     }
-    
+    //
+    //	helper method to send final email
+    //
+    private void sendMailWithLinkedFile(String address, String subject, String body, String filename, String attached) {
+        
+        Document thedoc = new Document();
+        thedoc.name = filename;
+        thedoc.body = Blob.valueOf(attached);
+        thedoc.contentType = 'text/csv';
+        thedoc.type = 'csv';
+        thedoc.folderid = UserInfo.getUserId();
+        insert thedoc;
+        
+        String fullDocURL = Url.getSalesforceBaseUrl().toExternalForm() + '/' + thedoc.id;
+
+        String servletURL = Url.getSalesforceBaseUrl().toExternalForm() + '/servlet/servlet.FileDownload?file=' + thedoc.id;
+        
+        // Create an email message object
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        String[] toAddresses = new String[] {address};
+        mail.setToAddresses(toAddresses);
+        mail.setSubject(subject);
+        mail.setPlainTextBody(body + '\nLink to ' + filename + ': ' + fullDocURL + '\n\nDownload ' + filename + ': ' + servletURL);
+        
+        // Pass this email message to the built-in sendEmail method 
+        // of the Messaging class
+        Messaging.SendEmailResult[] results = Messaging.sendEmail(
+                                 new Messaging.SingleEmailMessage[] { mail });        
+    }
     // 
     // return a zeroed Map of counters by record age
     //
@@ -247,6 +273,6 @@ global class fieldAnalysisBatch implements Database.Batchable<SObject>, Database
         String body = outputAgeStats();
         String filebody = computeCSVResult(theResult);
 
-		EmailManager.sendMailWithLinkedFile(UserInfo.getUserEmail(), subject, body, theObjectName+'.csv', filebody);
+		sendMailWithLinkedFile(UserInfo.getUserEmail(), subject, body, theObjectName+'.csv', filebody);
 	}
 }

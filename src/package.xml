@@ -4,9 +4,5 @@
         <members>fieldAnalysisBatch</members>
         <name>ApexClass</name>
     </types>
-    <types>
-        <members>EmailManager</members>
-        <name>ApexClass</name>
-    </types>
     <version>40.0</version>
 </Package>
