@@ -147,7 +147,7 @@ global class fieldAnalysisBatch implements Database.Batchable<SObject>, Database
     //
     // just do +1 on a field counter
     // 
-    private void incrementAttribute(Map<String,Integer> theMap, String attribute) {
+    @TestVisible private void incrementAttribute(Map<String,Integer> theMap, String attribute) {
         Integer nb = theMap.get(attribute);
         nb++;
         theMap.put(attribute, nb);
@@ -191,7 +191,7 @@ global class fieldAnalysisBatch implements Database.Batchable<SObject>, Database
     //
     // compute age of current record
     // 
-    private void computeRecordAge(Date recDate){
+    @TestVisible private void computeRecordAge(Date recDate){
         integer nbyears = recDate.daysBetween(currentDate)/365;
         integer theKey;
         if (countersByAge.containsKey(nbyears)) theKey = nbyears;
