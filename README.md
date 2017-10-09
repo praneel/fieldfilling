@@ -1,3 +1,10 @@
+
+<a href="https://githubsfdeploy.herokuapp.com">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
+
 # fieldfilling
 This package is a Salesforce utility counting for each field of a given object the number of records which are filled.  
 It's implemented as an Apex batch class so it can handle millions of records.  
