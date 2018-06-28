@@ -5,10 +5,23 @@
 </a>
 
 
+
+
 # fieldfilling
 This package is a Salesforce utility counting for each field of a given object the number of records which are filled.  
 It's implemented as an Apex batch class so it can handle millions of records.  
 # Getting started
+
+# Using it from the Exexute Anonymous console 
+
+
+fieldAnalysisBatch instance = new fieldAnalysisBatch(<object name>, <query limit>);
+Id theId = Database.ExecuteBatch(instance, 2000);
+Where : object name = the name of the object to be analyzed, query limit = max number of records to be analyzed (if 0, no limit)
+Example : fieldAnalysisBatch instance = new fieldAnalysisBatch('account', 0);
+
+  
+  
 ## Prerequisites
 The package comes as an Apex class (+ its test class) to deploy into a Salesforce org. 
 The package includes also a (bash) shell to launch the utility at CLI level, leveraging SFDX CLI utilities.  
