@@ -40,11 +40,4 @@ examples :
   *sh ff.sh myorg Account* # launch the batch for all Account records of myorg, with a default batch unit size of 2000  
   *sh ff.sh Lead 1500* # launch the batch for up to 1500 Lead records  
   *sh ff.sh Cust__c 1200 400* # launch the batch for up to 1200 Cust__c records - the batch unit size will be of 400 so it's likely you'll have 3 batch units  
-## Caution
-If you have millions of records, the batch can be long to end. You can follow its completion status in the Setup / Apex jobs window.  
-# What's you get
-The batch creates a .csv file in the personal Document folder of the user running the batch.  
-It also sends an email to the user, including a link to the csv and some statistics.  
-Click on the link to download it and to open it directly in your spreadsheet.  
-Records counts are broken down by Salesforce record types.  
-If no record types are defined for your object, a "null record type entry" column is created.  
+ 
